@@ -152,6 +152,6 @@ test('example', () => {
 
 ## Copyright
 
-Dominik Zogg 2022
+2023 Dominik Zogg
 
 [1]: https://www.npmjs.com/package/@chubbyts/chubbyts-mock
