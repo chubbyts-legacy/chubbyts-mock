@@ -1,10 +1,10 @@
 class Call {
   private method: string;
-  private hasWithValue: boolean = false;
-  private withValue: Array<unknown> | undefined;
+  private hasWithValue = false;
+  private withValue: unknown[] | undefined;
   private error: Error | undefined;
-  private hasReturnSelfValue: boolean = false;
-  private hasReturnValue: boolean = false;
+  private hasReturnSelfValue = false;
+  private hasReturnValue = false;
   private returnValue: any;
   private returnCallbackValue: Function | undefined;
 
@@ -16,84 +16,53 @@ class Call {
     return new Call(method);
   }
 
-  public with(...withValue: Array<unknown>): Call {
+  public with(...withValue: unknown[]): Call {
     this.hasWithValue = true;
     this.withValue = withValue;
-
     return this;
   }
 
   public willThrowError(error: Error): Call {
-    if (this.hasReturnSelfValue) {
-      throw new Error('willThrowError: There is already a return self');
-    }
-
-    if (this.hasReturnValue) {
-      throw new Error('willThrowError: There is already a return');
-    }
-
-    if (this.returnCallbackValue) {
-      throw new Error('willThrowError: There is already a return callback');
-    }
-
+    this.checkForExistingReturnValues('willThrowError');
     this.error = error;
-
     return this;
   }
 
   public willReturnSelf(): Call {
-    if (this.error) {
-      throw new Error('willReturnSelf: There is already a error');
-    }
-
-    if (this.hasReturnValue) {
-      throw new Error('willReturnSelf: There is already a return');
-    }
-
-    if (this.returnCallbackValue) {
-      throw new Error('willReturnSelf: There is already a return callback');
-    }
-
+    this.checkForExistingReturnValues('willReturnSelf');
     this.hasReturnSelfValue = true;
-
     return this;
   }
 
   public willReturn(returnValue: any): Call {
-    if (this.error) {
-      throw new Error('willReturn: There is already a error');
-    }
-
-    if (this.hasReturnSelfValue) {
-      throw new Error('willReturn: There is already a return self');
-    }
-
-    if (this.returnCallbackValue) {
-      throw new Error('willReturn: There is already a return callback');
-    }
-
+    this.checkForExistingReturnValues('willReturn');
     this.hasReturnValue = true;
     this.returnValue = returnValue;
-
     return this;
   }
 
   public willReturnCallback(returnCallback: Function): Call {
+    this.checkForExistingReturnValues('willReturnCallback');
+    this.returnCallbackValue = returnCallback;
+    return this;
+  }
+
+  private checkForExistingReturnValues(method: string): void {
     if (this.error) {
-      throw new Error('willReturnCallback: There is already a error');
+      throw new Error(`${method}: There is already an error`);
     }
 
     if (this.hasReturnSelfValue) {
-      throw new Error('willReturnCallback: There is already a return self');
+      throw new Error(`${method}: There is already a return self`);
     }
 
     if (this.hasReturnValue) {
-      throw new Error('willReturnCallback: There is already a return');
+      throw new Error(`${method}: There is already a return value`);
     }
 
-    this.returnCallbackValue = returnCallback;
-
-    return this;
+    if (this.returnCallbackValue) {
+      throw new Error(`${method}: There is already a return callback`);
+    }
   }
 
   public getMethod(): string {
@@ -112,7 +81,7 @@ class Call {
     return this.hasReturnValue;
   }
 
-  public getWith(): Array<unknown> | undefined {
+  public getWith(): unknown[] | undefined {
     return this.withValue;
   }
 

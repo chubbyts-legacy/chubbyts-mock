@@ -102,13 +102,13 @@ describe('Call', () => {
   test('try error and return self', () => {
     expect(() => {
       Call.create('method').willThrowError(new Error()).willReturnSelf();
-    }).toThrow('willReturnSelf: There is already a error');
+    }).toThrow('willReturnSelf: There is already an error');
   });
 
   test('try error and return', () => {
     expect(() => {
       Call.create('method').willThrowError(new Error()).willReturn('test');
-    }).toThrow('willReturn: There is already a error');
+    }).toThrow('willReturn: There is already an error');
   });
 
   test('try error and return callback', () => {
@@ -116,7 +116,7 @@ describe('Call', () => {
       Call.create('method')
         .willThrowError(new Error())
         .willReturnCallback(() => {});
-    }).toThrow('willReturnCallback: There is already a error');
+    }).toThrow('willReturnCallback: There is already an error');
   });
 
   test('try return self and error', () => {
