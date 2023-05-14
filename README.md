@@ -20,6 +20,10 @@
 
 A very strict mocking library for class based objects.
 
+**Deprecated**:
+This package isn't supported anymore, i recommend the following package: [chubbyts/chubbyts-function-mock][2].
+It's not an 1:1 replacement, but it would work for most cases and is more lighweight and more typesafe.
+
 ## Requirements
 
  * node: 12
@@ -155,3 +159,4 @@ test('example', () => {
 2023 Dominik Zogg
 
 [1]: https://www.npmjs.com/package/@chubbyts/chubbyts-mock
+[2]: https://www.npmjs.com/package/@chubbyts/chubbyts-function-mock
